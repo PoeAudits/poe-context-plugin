@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# Default per-project tmux setup
+# MODE can be "override" (default) or "merge"
+MODE=override
+set -euo pipefail
+
+S="$TMUX_SESSION"
+ROOT="$TMUX_PROJECT_DIR"
+
+# Rename the starter window (created by ws)
+tmux rename-window -t "${S}:base" "editor"
+tmux send-keys -t "${S}:editor" "nvim" C-m
+
+# Create additional windows
+tmux new-window -t "$S:" -n shell -c "$ROOT"
+tmux new-window -t "$S:" -n git -c "$ROOT"
+tmux send-keys -t "${S}:git" "git status" C-m
+
+# ======================================================
+# Example: Add your own setup below — mix & match freely
+# ======================================================
+
+# --- Logs & Monitoring ---
+# tmux new-window -t "$S:" -n logs -c "$ROOT"
+# tmux send-keys -t "${S}:logs" "tail -f logs/app.log" C-m
+#
+# tmux new-window -t "$S:" -n sysmon -c "$ROOT"
+# tmux send-keys -t "${S}:sysmon" "htop" C-m
+#
+# tmux new-window -t "$S:" -n docker -c "$ROOT"
+# tmux send-keys -t "${S}:docker" "docker compose logs -f" C-m
+
+# --- Web / API / Backend servers ---
+# tmux new-window -t "$S:" -n api -c "$ROOT"
+# tmux send-keys -t "${S}:api" "source venv/bin/activate && flask run" C-m
+#
+# tmux new-window -t "$S:" -n backend -c "$ROOT"
+# tmux send-keys -t "${S}:backend" "npm run dev" C-m
+#
+# tmux new-window -t "$S:" -n frontend -c "$ROOT/client"
+# tmux send-keys -t "${S}:frontend" "npm start" C-m
+#
+# tmux new-window -t "$S:" -n django -c "$ROOT"
+# tmux send-keys -t "${S}:django" "python manage.py runserver 0.0.0.0:8000" C-m
+
+# --- Build / Watchers / Tests ---
+# tmux new-window -t "$S:" -n build -c "$ROOT"
+# tmux send-keys -t "${S}:build" "npm run build -- --watch" C-m
+#
+# tmux new-window -t "$S:" -n test -c "$ROOT"
+# tmux send-keys -t "${S}:test" "pytest -v" C-m
+#
+# tmux new-window -t "$S:" -n vite -c "$ROOT"
+# tmux send-keys -t "${S}:vite" "npm run dev" C-m
+
+# --- Databases / Shells ---
+# tmux new-window -t "$S:" -n psql -c "$ROOT"
+# tmux send-keys -t "${S}:psql" "psql my_database" C-m
+#
+# tmux new-window -t "$S:" -n redis -c "$ROOT"
+# tmux send-keys -t "${S}:redis" "redis-cli" C-m
+#
+# tmux new-window -t "$S:" -n mongo -c "$ROOT"
+# tmux send-keys -t "${S}:mongo" "mongosh" C-m
+
+# --- Containers / Cloud Dev ---
+# tmux new-window -t "$S:" -n docker -c "$ROOT"
+# tmux send-keys -t "${S}:docker" "docker compose up" C-m
+#
+# tmux new-window -t "$S:" -n kubectl -c "$ROOT"
+# tmux send-keys -t "${S}:kubectl" "kubectl get pods -w" C-m
+
+# --- Editor / split-pane workflows ---
+# tmux split-window -t "${S}:editor" -h -c "$ROOT"
+# tmux send-keys -t "${S}:editor" "opencode" C-m
+#
+# tmux split-window -t "${S}:editor" -v -c "$ROOT"
+# tmux send-keys -t "${S}:editor" "make run" C-m
+#
+# tmux select-pane -t "${S}:editor".0  # focus back to editor pane
+
+# --- Utility panes ---
+# tmux new-window -t "$S:" -n repl -c "$ROOT"
+# tmux send-keys -t "${S}:repl" "python" C-m
+#
+# tmux new-window -t "$S:" -n notes -c "$ROOT"
+# tmux send-keys -t "${S}:notes" "nvim NOTES.md" C-m
+#
+# tmux new-window -t "$S:" -n gitwatch -c "$ROOT"
+# tmux send-keys -t "${S}:gitwatch" "watch -n 3 git status" C-m
+
+# ======================================================
+# End of examples
+# ======================================================
+
+tmux select-window -t "${S}:editor"
